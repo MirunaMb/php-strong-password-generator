@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+// Ho incluso il file function
 include 'functions.php';
 
 // MAIN LOGIC
@@ -13,6 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
     //invocco la funzione generaPasswordCasuale e gli passo come parametro $lunghezzaPassword
     //assegno questa funzione nella variabile $passwordGenerata 
     $passwordGenerata = generaPasswordCasuale($lunghezzaPassword);
+
+    //Salvo la password nella sessione
+    $_SESSION['passwordGenerata'] = $passwordGenerata;
+
+    // Reindirizza l'utente al file password.php
+    header("Location: password.php");
+    exit;
 }
 
 
@@ -48,8 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
             <?php
             if (isset($passwordGenerata)) {
                 echo "<h2>Password Generata:</h2>";
-                echo "<p>$passwordGenerata<p>";
-
+                echo "<p>" . $passwordGenerata . "</p>";
             }
             ?>
         </div>

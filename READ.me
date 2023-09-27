@@ -31,3 +31,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
 <html lang="en">
    // Resto del tuo codice resta come prima
 </html>
+
+
+
+#Come reindirizzare l'utente a una pagina dedicata per mostrare la password generata utilizzando le sessioni ?
+Step 1: Creiamo una pagina chiamata, ad esempio password.php, che mostra la password generata.
+
+Nel file password.php metteremo :
+```php
+<?php
+session_start(); //IMPORTANTE
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generata</title>
+</head>
+
+<body> 
+
+    //IMPORTANTE
+    <h1>Password Generata</h1>
+    <?php if (isset($_SESSION['passwordGenerata'])): ?>
+        <p><?php echo $_SESSION['passwordGenerata']; ?></p>
+    <?php else: ?>
+        <p>La password non è disponibile.</p>
+    <?php endif; ?>
+    //IMPORTANTE
+
+</body>
+
+</html>
+
+```
+
+Step 2: Modifichiamo il file index.php in modo che dopo aver generato la password, salviamo questa password nella sessione e reindirizziamo  l'utente alla pagina password.php :
+
+```php
+<?php
+session_start(); //IMPORTANTE
+
+// IncludO il file functions.php
+include 'functions.php'; //IMPORTANTE 
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
+    $lunghezzaPassword = (int) $_GET['lunghezza'];
+    $passwordGenerata = generaPasswordCasuale($lunghezzaPassword);
+
+    // SalvO la password nella sessione //IMPORTANTE
+    $_SESSION['passwordGenerata'] = $passwordGenerata;
+
+    // Reindirizziamo l'utente a password.php //IMPORTANTE
+    header("Location: password.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Password Casuale</title>
+</head>
+
+<body>
+    <div class="wrapper container rounded p-4 mt-5 text-center">
+        <h1>Generatore Password Casuale</h1>
+        <form action="index.php">
+            <label for="lunghezza">Lunghezza della Password:</label>
+            <input type="number" name="lunghezza" id="lunghezza" required>
+            <input type="submit" value="Genera Password">
+        </form>
+    </div>
+</body>
+
+</html>
+
+
+```
