@@ -1,0 +1,33 @@
+# Come spostare le funzioni da un file principale (index.php) ?
+Step 1: Creamo un file functions.php e spostiamo all'interno di esso la definizione della funzione generaPasswordCasuale.In questo esercizio :
+```php
+<?php
+function generaPasswordCasuale($lunghezza)
+{
+    $caratteri = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?';
+    $password = '';
+    $lunghezzaCaratteri = strlen($caratteri);
+
+    for ($i = 0; $i < $lunghezza; $i++) {
+        $carattereCasuale = $caratteri[rand(0, $lunghezzaCaratteri - 1)];
+        $password .= $carattereCasuale;
+    }
+    return $password;
+}
+?>
+```
+Step 2: Nella tua pagina principale (index.php), includo il file functions.php all'inizio del codice PHP. Uso la funzione include.
+<?php
+// Includo il file functions.php
+include 'functions.php';
+
+// Resto del tuo codice resta come prima:
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
+    $lunghezzaPassword = (int) $_GET['lunghezza'];
+    $passwordGenerata = generaPasswordCasuale($lunghezzaPassword);
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+   // Resto del tuo codice resta come prima
+</html>

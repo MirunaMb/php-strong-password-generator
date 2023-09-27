@@ -1,29 +1,15 @@
 <?php
-// il parametro lunghezza proviene dalla variabile $lunghezzaPassword,che questa variabile prende i dati che il client inserisce nella input 
-function generaPasswordCasuale($lunghezza)
-{
-    // caratteri validi che possono essere utilizzati per generare la password casuale
-    $caratteri = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?';
+include 'functions.php';
 
-    // $password, variabile inizializzata come una stringa vuota per memorizzare la password casuale .
-    $password           = '';
-    $lunghezzaCaratteri = strlen($caratteri);
-
-    for ($i = 0; $i < $lunghezza; $i++) {
-        //l'indice deve essere sempre all'interno dei limiti validi dell'array,quindi - 1
-        $carattereCasuale = $caratteri[rand(0, $lunghezzaCaratteri - 1)];
-
-        //il carattereCasuale viene aggiunto alla passwordcon .=
-        $password .= $carattereCasuale;
-    }
-    return $password;
-}
+// MAIN LOGIC
 // se c'e una lungezza e il codice viene eseguito solo quando la pagina è stata caricata tramite una richiesta "GET"
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lunghezza'])) {
+
     //$_GET['lunghezza'] estrae il valore inserito nell'input con name="lunghezza" dal URL, che è un parametro GET.
     //int trasforma il valore in un numero intero, garantendo che sia trattato come un numero,no come una stringa.
     //Quindi, il numero intero risultante viene assegnato alla variabile $lunghezzaPassword.
     $lunghezzaPassword = (int) $_GET['lunghezza'];
+
     //invocco la funzione generaPasswordCasuale e gli passo come parametro $lunghezzaPassword
     //assegno questa funzione nella variabile $passwordGenerata 
     $passwordGenerata = generaPasswordCasuale($lunghezzaPassword);
